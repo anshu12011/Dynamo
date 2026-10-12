@@ -1,0 +1,69 @@
+artifacts = ["/app/test_limiter.py", "/app/root_cause.txt"]
+
+[task]
+name = "dynamo/mutation-rate-limiter"
+description = "Write a mutation-resistant test suite and root cause report for a concurrent token-bucket rate limiter."
+
+[metadata]
+category = "Software Engineering"
+subcategory = "Testing and Quality engineering"
+model_tested = "Opus-4.8"
+agent_tested = "Terminus-2"
+task_objective = ["test", "analyze"]
+artifact_type = ["test_suite_or_benchmark", "document_or_report"]
+expert_time_estimate_hours = 4
+
+difficulty_explanation = """
+This task requires writing a mutation-resistant test suite and root cause report for a concurrent token-bucket rate limiter with sliding-window refill and burst credit handling. The rate limiter implementations and 20 mutants are synthetic code designed specifically for this task to prevent data contamination.
+It is genuinely difficult for agents because:
+1. It simulates the real-world role of a Senior SDET or Quality Engineer hardening an API gateway rate limiter component for production.
+2. It requires black-box state-machine testing and contract enforcement rather than simple assertion writing.
+3. It requires designing efficient concurrent stress harnesses with thread interleavings or lock assertions to expose race conditions within a disclosed 45-second execution limit per run.
+4. Tests must be precise enough to kill all 20 subtle logic mutants while avoiding false positives on correct reference behavior.
+5. The candidate must analyze empirical test failures on a buggy implementation to diagnose 4 subtle defects and write a structured root-cause report naming specific methods and mechanisms.
+6. The dual-formatting anti-cheat requires suites to test observable rate limiter behaviour — source-fingerprinting or introspection-based approaches that match text patterns will fail against a reformatted reference.
+7. The task scope requires reading 23+ files (spec, reference, buggy, 20 mutants), writing 50-70 tests, running 20+ mutation passes, and producing a substantive analytical report — all within the agent timeout budget.
+"""
+
+solution_explanation = """
+The reference solution implements a comprehensive pytest test suite in /app/test_limiter.py and a detailed root-cause document in /app/root_cause.txt.
+The test suite covers:
+- Core contract validation: capacity constraints, refill rate validation, cost parameter validation (ValueError on invalid capacity, refill_rate, or cost).
+- Token deduction and rejection isolation: verifying allow_request deducts tokens on success and DOES NOT deduct tokens on rejection (no token credit leak).
+- Refill precision & capacity boundaries: verifying sub-second fractional token refill calculations, exact capacity capping, and monotonic time usage.
+- Per-client quota reconfigurations: verifying set_client_quota updates capacity/refill_rate atomically while retaining proportional available tokens.
+- Cumulative metrics tracking: verifying get_stats() for allowed, blocked, refills, and reconfigurations across operations.
+- Concurrency stress testing: multi-threaded concurrent allow_request, refill, and set_client_quota workers.
+- State-machine property tests: sequence of randomized operations comparing TokenBucketRateLimiter behavior.
+The root-cause analysis documents all 4 defects in /app/rate_limiter_buggy.py (token credit leak on rejected request, integer elapsed time underflow, refill capacity overflow, and non-atomic lock release during quota update), with each defect naming the specific buggy method and explaining the mechanism.
+"""
+
+verification_explanation = """
+The verifier script (/tests/test_outputs.py) executes the following verification pipeline:
+1. Security & Path Protection: Ensures /app/test_limiter.py and /app/root_cause.txt exist as regular non-symlink files strictly inside /app. Minimum report size 350 bytes.
+2. Black-Box Isolation (AST): Rejects test suites containing implementation-selecting strings (LIMITER_MODULE, rate_limiter_ref, rate_limiter_buggy, mutants.) or source/bytecode introspection APIs (inspect, dis, open, __code__, __file__, getsource, etc.) via comprehensive AST walk.
+3. Reference Implementation Compliance: Runs pytest on /app/test_limiter.py against the trusted reference implementation 3 times. Requires 100% pass (0 failures, 0 errors) across all runs.
+4. Dual-Formatting Anti-Cheat: Runs pytest on /app/test_limiter.py against a textually-reformatted (but behaviourally identical) reference. This catches source-fingerprinting suites that inspect implementation source text rather than testing observable behaviour.
+5. Buggy Implementation Detection: Runs pytest on /app/test_limiter.py against the buggy implementation. Requires at least 1 failing test.
+6. Root Cause Report Verification: Verifies /app/root_cause.txt meets documented thresholds:
+   - >= 120 words total, >= 350 bytes
+   - >= 4 distinct paragraphs (blank-line delimited)
+   - Per defect: paragraph must name the specific buggy method, include primary mechanism keywords AND context keywords, state the directionally accurate code-level mechanism including a specific code token from rate_limiter_buggy.py (e.g. bucket[0] for defect 1, int(now - last_time) for defect 2, cap + 10.0 for defect 3, self._lock for defect 4), be >= 25 words, have >= 2 sentences ending with punctuation, and have >= 40% unique vocabulary ratio
+   - Cross-checks that all 4 defect categories are covered in distinct paragraphs
+7. Mutation Score Gate: Executes /app/test_limiter.py against all 20 independently seeded mutants with a disclosed 45s per-mutant timeout (mirrored by /app/run_mutation_tests.py). Requires killing all 20/20.
+"""
+
+[verifier]
+timeout_sec = 600.0
+
+[agent]
+timeout_sec = 3600
+
+[environment]
+build_timeout_sec = 600.0
+cpus = 2
+memory_mb = 4096
+storage_mb = 10240
+gpus = 0
+allow_internet = true
+mcp_servers = []

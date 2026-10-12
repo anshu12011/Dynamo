@@ -1,0 +1,128 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 9,
+            "passed": 0,
+            "failed": 9,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1785768475.6468713,
+            "stop": 1785768476.3462844
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_scored_output_files_exist_and_are_regular",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0015196999993349891,
+                "start": 1785768475.748588,
+                "stop": 1785768475.801133,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_scored_output_files_exist_and_are_regular():\n        \"\"\"Verify deliverable files exist as regular non-symlink files in /app.\"\"\"\n>       test_path = _safe_output_path(TEST_FILE)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n/tests/test_outputs.py:430: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\npath = PosixPath('/app/test_limiter.py')\n\n    def _safe_output_path(path: Path) -> Path:\n        \"\"\"Validate that required artifact exists as a regular, non-symlink file inside /app.\"\"\"\n>       assert path.exists(), f\"Target deliverable is missing: {path}\"\nE       AssertionError: Target deliverable is missing: /app/test_limiter.py\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/test_limiter.py').exists\n\n/tests/test_outputs.py:191: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_root_cause_report_size",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0011212400004296796,
+                "start": 1785768475.8015573,
+                "stop": 1785768475.8548129,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_root_cause_report_size():\n        \"\"\"Verify report deliverable satisfies minimum byte length constraints.\"\"\"\n>       test_path = _safe_output_path(TEST_FILE)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n/tests/test_outputs.py:438: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\npath = PosixPath('/app/test_limiter.py')\n\n    def _safe_output_path(path: Path) -> Path:\n        \"\"\"Validate that required artifact exists as a regular, non-symlink file inside /app.\"\"\"\n>       assert path.exists(), f\"Target deliverable is missing: {path}\"\nE       AssertionError: Target deliverable is missing: /app/test_limiter.py\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/test_limiter.py').exists\n\n/tests/test_outputs.py:191: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_suite_uses_black_box_isolation",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0014542730004905025,
+                "start": 1785768475.8554957,
+                "stop": 1785768475.8930404,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_suite_uses_black_box_isolation():\n        \"\"\"Verify test_limiter.py respects black-box behavioral testing rules.\"\"\"\n>       test_path = _safe_output_path(TEST_FILE)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n/tests/test_outputs.py:446: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\npath = PosixPath('/app/test_limiter.py')\n\n    def _safe_output_path(path: Path) -> Path:\n        \"\"\"Validate that required artifact exists as a regular, non-symlink file inside /app.\"\"\"\n>       assert path.exists(), f\"Target deliverable is missing: {path}\"\nE       AssertionError: Target deliverable is missing: /app/test_limiter.py\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/test_limiter.py').exists\n\n/tests/test_outputs.py:191: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_reference_implementation_passes_repeatedly",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0008947449987317668,
+                "start": 1785768475.8934066,
+                "stop": 1785768475.9202304,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_reference_implementation_passes_repeatedly():\n        \"\"\"Verify suite passes 100% against reference implementation across 3 iterations.\"\"\"\n>       test_path = _safe_output_path(TEST_FILE)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n/tests/test_outputs.py:452: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\npath = PosixPath('/app/test_limiter.py')\n\n    def _safe_output_path(path: Path) -> Path:\n        \"\"\"Validate that required artifact exists as a regular, non-symlink file inside /app.\"\"\"\n>       assert path.exists(), f\"Target deliverable is missing: {path}\"\nE       AssertionError: Target deliverable is missing: /app/test_limiter.py\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/test_limiter.py').exists\n\n/tests/test_outputs.py:191: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_reference_alt_formatting_passes",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0013086769977235235,
+                "start": 1785768475.9208934,
+                "stop": 1785768475.9625463,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_reference_alt_formatting_passes():\n        \"\"\"Verify test suite passes against a reformatted reference implementation.\"\"\"\n>       test_path = _safe_output_path(TEST_FILE)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n/tests/test_outputs.py:462: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\npath = PosixPath('/app/test_limiter.py')\n\n    def _safe_output_path(path: Path) -> Path:\n        \"\"\"Validate that required artifact exists as a regular, non-symlink file inside /app.\"\"\"\n>       assert path.exists(), f\"Target deliverable is missing: {path}\"\nE       AssertionError: Target deliverable is missing: /app/test_limiter.py\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/test_limiter.py').exists\n\n/tests/test_outputs.py:191: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_reference_alt2_formatting_passes",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0017414479989383835,
+                "start": 1785768475.969792,
+                "stop": 1785768476.0616338,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_reference_alt2_formatting_passes():\n        \"\"\"Verify test suite passes against a structurally-modified, dict-backed reference implementation.\"\"\"\n>       test_path = _safe_output_path(TEST_FILE)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n/tests/test_outputs.py:475: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\npath = PosixPath('/app/test_limiter.py')\n\n    def _safe_output_path(path: Path) -> Path:\n        \"\"\"Validate that required artifact exists as a regular, non-symlink file inside /app.\"\"\"\n>       assert path.exists(), f\"Target deliverable is missing: {path}\"\nE       AssertionError: Target deliverable is missing: /app/test_limiter.py\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/test_limiter.py').exists\n\n/tests/test_outputs.py:191: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_buggy_implementation_is_detected_by_behavior",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0036410640004760353,
+                "start": 1785768476.0622272,
+                "stop": 1785768476.1536338,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_buggy_implementation_is_detected_by_behavior():\n        \"\"\"Verify test suite detects failure when executed against the buggy implementation.\"\"\"\n>       result = _run_suite_against(_safe_output_path(TEST_FILE), \"buggy\")\n                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n/tests/test_outputs.py:488: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\npath = PosixPath('/app/test_limiter.py')\n\n    def _safe_output_path(path: Path) -> Path:\n        \"\"\"Validate that required artifact exists as a regular, non-symlink file inside /app.\"\"\"\n>       assert path.exists(), f\"Target deliverable is missing: {path}\"\nE       AssertionError: Target deliverable is missing: /app/test_limiter.py\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/test_limiter.py').exists\n\n/tests/test_outputs.py:191: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_root_cause_report_explains_distinct_mechanisms",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0015620700014551403,
+                "start": 1785768476.1544394,
+                "stop": 1785768476.2462392,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_root_cause_report_explains_distinct_mechanisms():\n        \"\"\"Verify root_cause.txt contains substantive per-defect analysis matching code-level defects.\"\"\"\n>       content = _safe_output_path(ROOT_CAUSE_FILE).read_text(encoding=\"utf-8\")\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n/tests/test_outputs.py:494: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\npath = PosixPath('/app/root_cause.txt')\n\n    def _safe_output_path(path: Path) -> Path:\n        \"\"\"Validate that required artifact exists as a regular, non-symlink file inside /app.\"\"\"\n>       assert path.exists(), f\"Target deliverable is missing: {path}\"\nE       AssertionError: Target deliverable is missing: /app/root_cause.txt\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/root_cause.txt').exists\n\n/tests/test_outputs.py:191: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            },
+            {
+                "name": "test_outputs.py::test_mutation_kill_rate",
+                "status": "failed",
+                "raw_status": "call_failed",
+                "duration": 0.0013096459970256547,
+                "start": 1785768476.2467625,
+                "stop": 1785768476.3373654,
+                "retries": 0,
+                "file_path": "test_outputs.py",
+                "trace": "def test_mutation_kill_rate():\n        \"\"\"Verify test suite kills 100% (20 of 20) of seeded mutants.\"\"\"\n>       test_path = _safe_output_path(TEST_FILE)\n                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n\n/tests/test_outputs.py:631: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\npath = PosixPath('/app/test_limiter.py')\n\n    def _safe_output_path(path: Path) -> Path:\n        \"\"\"Validate that required artifact exists as a regular, non-symlink file inside /app.\"\"\"\n>       assert path.exists(), f\"Target deliverable is missing: {path}\"\nE       AssertionError: Target deliverable is missing: /app/test_limiter.py\nE       assert False\nE        +  where False = exists()\nE        +    where exists = PosixPath('/app/test_limiter.py').exists\n\n/tests/test_outputs.py:191: AssertionError",
+                "message": "The test failed in the call phase due to an assertion error"
+            }
+        ]
+    }
+}

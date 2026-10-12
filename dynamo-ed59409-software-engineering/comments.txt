@@ -1,0 +1,533 @@
+<!-- dynamo-static -->
+### Static checks ✅
+All deterministic checks passed.
+
+<details><summary>Checks</summary>
+
+|  | Check |
+|---|---|
+| ✅ | all 5 required task files are present and correctly placed |
+| ✅ | task.toml has all required metadata fields |
+| ✅ | all required task.toml fields are filled in (no placeholders) |
+| ✅ | task.toml category/objective/artifact labels are from the taxonomy |
+| ✅ | task slug is concise (<=3 tokens) |
+| ✅ | instruction.md uses absolute paths |
+| ✅ | instruction.md is <= 1500 tokens (Qwen3 — the client's tokenizer) |
+| ✅ | expected output files are documented in instruction.md |
+| ✅ | allow_internet is true |
+| ✅ | agent/verifier timeouts within the cap |
+| ✅ | gpu_types are canonical names |
+| ✅ | verifier writes /logs/verifier/reward.txt (not pre-created) |
+| ✅ | Dockerfile base image is a pre-approved image (non-approved → warning) |
+| ✅ | non-trivial build context has a .dockerignore |
+| ✅ | no source embedded via Dockerfile heredoc |
+| ✅ | no apt-get upgrade in Dockerfiles |
+| ✅ | no broad recursive chmod in Dockerfiles |
+| ✅ | Dockerfile does not COPY solution/ or tests/ |
+| ✅ | Dockerfile apt hygiene (no pins, update + cleanup) |
+| ✅ | Dockerfile is not pinned to a CPU platform |
+| ✅ | no bare nproc (use a fixed CPU count) |
+| ✅ | pip/uv installs are version-pinned |
+| ✅ | verifier does not fetch external resources at trial time |
+| ✅ | tests/test.sh installs nothing at verify time |
+| ✅ | tests/ has test_outputs.py and test.sh runs it |
+
+</details>
+--- COMMENT ---
+<!-- dynamo-eval -->
+### Dynamo eval — ✅ PASS
+
+# Dynamo Eval — dynamo/mutation-cache-test
+Format: Harbor
+Verdict: PASS (all criteria pass / only N/A)
+
+## Criteria
+| # | Criterion | Result | Note |
+|---|-----------|--------|------|
+| 1 | code_dependent | PASS | Requires writing a ~30-test black-box suite + iterating against 20 mutants and a buggy impl; not reasoning-only. |
+| 2 | essential_difficulty | PASS | Mutation-resistant behavioral testing, boundary/recency semantics, and lock-atomicity assertions under a 45s budget — SDET-level work. |
+| 3 | interesting_realistic | PASS | Maps to a QE/SDET hardening a concurrent cache library for production. |
+| 4 | novel | PASS | Hand-authored synthetic cache + 20 bespoke mutants; not a memorizable textbook exercise. |
+| 5 | solvable | PASS | Comprehensive solution provided; spot-checking each mutant vs. the suite shows all 20 are killed and reference passes. |
+| 6 | unambiguous | PASS | Spec (`CACHE_SPEC.md`) + instruction disclose API, output paths, report thresholds, and black-box constraints. |
+| 7 | outcome_verified | PASS | Grades the two output files; black-box restrictions are mechanistic anti-cheat, not mandated methods. |
+| 8 | instruction_concision | PASS | Absolute paths, backticks, no time-budget string, no solution hints; headings are used but justify the two-artifact structure. |
+| 9 | structured_data_schema | N/A | Outputs are a pytest file and a prose report, not JSON/CSV/config; report format is nonetheless normatively specified. |
+| 10 | verifiable | PASS | Deterministic pipeline reads exactly the declared artifacts; separate trusted oracle resists source-fingerprint/hardcode bypass. |
+| 11 | functional_verification | PASS | Core grading executes the suite against reference/alt/buggy/mutants; AST scan is an anti-cheat guard and report keyword checks are inherent to prose grading. |
+| 12 | deterministic_reproducible | PASS | Deps pinned (python digest, pytest, hypothesis); no live services; trusted oracle regenerated each run. |
+| 13 | test_instruction_alignment | PASS | Each verifier fn is atomic with a docstring and traces to an instruction requirement; anti-cheat variants are disclosed in the prompt. |
+| 14 | anti_cheat | PASS | Oracle lives only in `tests/oracle_fixtures.py`; impl selection blocked by AST; buggy source is agent-visible by design (it's the analysis target). |
+| 15 | solution_quality | PASS | Deliverable is code; suite/report are substantive separate files derived from the spec, no unexplained hardcoded results. |
+| 16 | task_security | PASS | No exfiltration, obfuscation, or destructive ops; solve.sh copies files, verifier runs pytest in temp dirs. |
+| 17 | difficulty_explanation_quality | PASS | Names expertise, traps, synthetic provenance, and real-world audience; no pass-rate/results citations. |
+| 18 | solution_explanation_quality | PASS | Congruent with `solve.sh` artifacts; describes coverage and the 4 diagnosed defects. |
+| 19 | verification_explanation_quality | PASS | Accurately mirrors the 7-stage `test_outputs.py`; thresholds (words, 35% unique, 45s, 20/20) are disclosed, not fuzzy calibrated bands. |
+| 20 | accurate_taxonomy_labels | PASS | test/analyze + test_suite/document labels match the deliverables. |
+| 21 | expert_time_estimate | PASS | 4h is plausible/consistent with the described SDET workload. |
+| 22 | open_internet | PASS | `allow_internet = true`; custom code means the answer isn't retrievable online. |
+| 23 | reviewable | PASS | Spec, ref, buggy, oracle all present; expected behavior derived by execution, not hardcoded. |
+| 24 | typos | PASS | Identifiers consistent across instruction, env, solution, tests. |
+| 25 | no_extraneous_files | PASS | ref/buggy/mutants/selector/harness/spec are all referenced by the task workflow. |
+| 26 | verifier_configuration | PASS | `artifacts` at top level and both paths declared; pytest/hypothesis baked; oracle in `tests/`, not COPYed into image. |
+| 27 | environment_hygiene | PASS | Dockerfile COPYs only `data`; no `solution/`/`tests/`; deps pinned; no apt misuse. |
+| 28 | resource_configuration | PASS | 300s verifier / 3600s agent, 2 cpu / 4GB fit ~25 pytest passes and concurrency tests; difficulty is intellectual. |
+| 29 | task_name | PASS | `[task].name = "dynamo/mutation-cache-test"` — org/name, kebab-case, 3 tokens, descriptive. |
+| 30 | task_readme | N/A | No development README present. |
+| 31 | task_toml_schema | PASS | Only recognized sections/fields; no invented keys. |
+
+## Failures
+None. No criterion fails; two are N/A (structured_data_schema — no JSON/CSV/config output; task_readme — no README present).
+
+## Notes
+- `[task].description` is present alongside `name`. The rubric enumerates `name` for the `[task]` table but not `description`; it is a commonly-recognized Harbor field and clearly not cruft, so I graded `task_toml_schema` PASS. If your schema check treats any un-enumerated `[task]` subfield as extraneous, this is the only line that would flip.
+- The suite relies on time-based TTLs (`time.sleep` of 0.02–0.08s with matching TTLs) and thread/concurrency tests, and the verifier runs the reference suite 3× plus 20 mutant passes. Margins look adequate and the reference implementation is behaviorally correct, so I could not demonstrate flakiness from the files — but timing-sensitive suites are the most likely source of an intermittent `deterministic_reproducible`/`verifiable` failure under heavy CI load. This is a non-blocking note; running the pipeline several times would confirm stability.
+- The `root_cause.txt` grading is keyword/structure-based (method + primary + context terms per paragraph). The keyword sets align with the instruction's own vocabulary ("recency", "boundary", "_is_expired()", "lock"), so a competent expert's report passes; the rigidity is a minor fairness note, not a defect, since the instruction discloses the required content and thresholds.
+
+---
+*Automated read-only review against `.dynamo/dynamo-rubric.toml`. Address the
+failing criteria above, then `git commit` and `git push` to re-run. All
+criteria must pass to be accepted.*
+--- COMMENT ---
+## Task Similarity Check ✅
+
+No delivered Dynamo task is too similar to this task.
+
+| Artifact | Highest similarity score |
+|---|---:|
+| Instruction | 0.7462212666018493 |
+| Verifier | 0.7676988013884404 |
+
+- **Threshold:** `0.9` (a score at or above this value is blocked)
+
+This check is enforced. The matched task and its contents are intentionally hidden.
+
+<!-- Sticky Pull Request Commentdynamo-task-similarity -->
+--- COMMENT ---
+<!-- dynamo-similarity -->
+### Duplicate check — ✅ no duplicate found
+
+Verdict: UNIQUE
+
+The closest candidate is TB3 / mvcc-lsm-compaction, which also involves diagnosing concurrency/data-visibility defects in a storage/caching system and adding a regression test. However, that task asks the agent to *fix* a C++ MVCC LSM implementation and add a single deterministic reproducer, whereas the submitted task asks the agent to *author a mutation-resistant pytest suite* (killing 20 seeded mutants under black-box constraints) plus a written root-cause report for a Python TTL-LRU cache — a fundamentally different objective (test authoring / mutation testing rather than bug-fixing). No candidate shares that core problem.
+
+<details><summary>Most similar existing TB2/TB3 tasks (lexical)</summary>
+
+| Rank | Existing task | Benchmark | Lexical similarity |
+|------|---------------|-----------|--------------------|
+| 1 | `batched-eval-parity` | TB3 | 0.211 |
+| 2 | `subgaussian-mgf-tactic` | TB3 | 0.112 |
+| 3 | `mvcc-lsm-compaction` | TB3 | 0.112 |
+| 4 | `adaptive-rejection-sampler` | TB2 | 0.084 |
+| 5 | `build-cython-ext` | TB2 | 0.066 |
+| 6 | `hf-model-inference` | TB2 | 0.062 |
+</details>
+
+---
+*Compared your `instruction.md` against the Terminal-Bench 2 & 3 task sets. Your
+task must be **novel** — not a reworded or reskinned version of an existing benchmark
+task. If this is a false match, adjust `instruction.md` to make the distinct problem
+clear, then `git commit` and `git push` to re-run.*
+--- COMMENT ---
+## 🔍 Task Validation Results
+
+| Docker | Oracle | Nop |
+|--------|--------|-----|
+| ✅ | ✅ | ✅ |
+
+<details><summary>Legend</summary>
+
+- **Docker**: `environment/` image builds on the runner
+- **Oracle**: `solution/solve.sh` makes the verifier pass (reward 1.0)
+- **Nop**: doing nothing fails the verifier (reward < 1.0) — proves the task is non-trivial
+- ⏭️ = skipped (prerequisite failed) · ➖ = not run (remote backend builds the image)
+</details>
+
+<sub><a href="https://github.com/handshake-project-dynamo/dynamo-ed59409-software-engineering/actions/runs/30596712262">Ran</a> on <code>d4ff9e1</code> after static checks + rubric review passed.</sub>
+
+<!-- Sticky Pull Request Commenttask-validation -->
+--- COMMENT ---
+## ⏱️ Pre-check (pass@2)
+
+**pass@2: 0/2 passed** — `Model A` on Daytona (agent-run budget = task timeout_sec, capped 3600s/1hr — working time only, excludes environment startup)
+
+Trials: ⚠️ ❌
+
+✅ **At least one valid agent failure** (1/2) — the task is plausibly hard. Proceeding to pass@5.
+
+**Rerun Recommended: NO**
+
+<sub>Breakdown: 0 solved · 1 valid-fail · 0 task/verifier-issue · 0 in-progress-timeout · 1 infra/setup-timeout · 0 unanalyzed</sub>
+
+<details><summary>Pass@ Analysis — Model A</summary>
+
+## Per-Trajectory Rubric
+
+| Trial | Reward | task_specification | reward_hacking | difficulty_crux | near_miss | refusals | low_timeout | approach_validity |
+|---|---|---|---|---|---|---|---|---|
+| task__wLxrjJZ | 0.0 | PASS | PASS | FAIL | PASS | PASS | PASS | PASS |
+| task__hpPaggR | null | PASS | PASS | PASS | FAIL | PASS | FAIL | PASS |
+
+---
+
+## Fail Reasons
+
+The two trials fail for **distinct root causes** — they are not the same failure mode:
+
+**Trial task__wLxrjJZ — Terminal Wedge (tool-use execution failure)**
+The agent correctly diagnosed all four bugs and designed appropriate tests, but used a single oversized heredoc keystrokes string (~15,000+ characters) to write test_cache.py. The closing `TESTEOF` delimiter was silently truncated, leaving bash in PS2 (`&gt;`) input-collection mode for ~58 of 60 available minutes. Every subsequent step fed more input into the open heredoc rather than executing shell commands. This is a **terminal wedge** failure: the agent conceptually solved the task but could not materialize its solution.
+
+**Trial task__hpPaggR — Near-Miss Timeout (infrastructure limits)**
+The agent successfully wrote both required artifacts (test_cache.py at 19,507 bytes, root_cause.txt at 4,938 bytes), with both passing structural inspection against spec requirements. However, the agent's concurrency stress tests (N=30,000 entries, 20 threads, 4-second duration each) required approximately 10 seconds per pytest invocation. With 25 total pytest passes (20 mutation + 3 reference + 1 alt format + 1 buggy detection), total verifier execution exceeded the 300-second verifier timeout in the 2-CPU/4GB verifier environment. The agent itself was also cut off by the 3600-second agent timeout mid-final-rewrite. This is a **near-miss timeout / low-timeout** failure.
+
+**Pattern:** The two trials do NOT share the same root cause. Trial 1 is a file-writing strategy error; Trial 2 is an infrastructure/resource-budget mismatch. The task itself (designing mutation-killing tests under verifier time constraints) is legitimate difficulty, but the 300-second verifier window may be structurally too tight for exhaustive concurrency-based mutation testing on constrained hardware.
+
+---
+
+## Golden vs Agent Values
+
+| Quantity | Golden Expected ± tol | Agent Value(s) | Off By | Trial(s) |
+|---|---|---|---|---|
+| /app/test_cache.py exists | Present, ≥1 byte | **Missing** (never created) | 100% absent | task__wLxrjJZ |
+| /app/root_cause.txt exists | Present, ≥350 bytes, ≥120 words, 4 paragraphs | **Missing** (never created) | 100% absent | task__wLxrjJZ |
+| /app/test_cache.py exists | Present, passing verifier checks | Present (19,507 bytes, ~75 tests) | Structurally present; verifier did not complete | task__hpPaggR |
+| /app/root_cause.txt exists | Present, ≥350 bytes, ≥120 words, 4 paragraphs | Present (4,938 bytes, 4 paragraphs, correct keywords) | Structurally present; verifier did not complete | task__hpPaggR |
+| Mutation kill rate | 20/20 mutants killed | **Unverified** — verifier timed out before assertions fired | Unknown | task__hpPaggR |
+| Per-mutant test runtime | ≤45 seconds each | ~10 seconds per invocation (estimated) | Within 45s limit individually; sum exceeds 300s verifier budget | task__hpPaggR |
+
+*Note: For task__hpPaggR, verifier output is entirely absent (empty verifier/ directory, no ctrf.json, no reward.txt). No quantitative assertion values are recoverable from that trial.*
+
+---
+
+## Failing Tests
+
+**Trial task__wLxrjJZ** — All 8 verifier tests failed uniformly, all tracing to the same missing-file root assertion:
+
+1. `test_outputs.py::test_scored_output_files_exist_and_are_regular`
+2. `test_root_cause_report_size`
+3. `test_suite_uses_black_box_isolation`
+4. `test_reference_implementation_passes_repeatedly`
+5. `test_reference_alt_formatting_passes`
+6. `test_buggy_implementation_is_detected_by_behavior`
+7. `test_root_cause_report_explains_distinct_mechanisms`
+8. `test_mutation_kill_rate`
+
+All 8 cascaded from the file-existence check: `"Required output file does not exist: /app/test_cache.py"` and `"/app/root_cause.txt"`. The verifier ran for only 0.6 seconds.
+
+**Trial task__hpPaggR** — No test data available. The verifier/ directory is entirely empty (no ctrf.json, no test-stdout.txt, no reward.txt). The VerifierTimeoutError fired after exactly 300 seconds before any test assertion completed. No individual test pass/fail data is recoverable.
+
+**Cross-trial uniform failures:** None can be confirmed — the two trials have different failure modes (missing artifacts vs. verifier timeout with no output). The only test confirmed to fail in both trials is implicitly `test_mutation_kill_rate`, but this is inferred rather than evidenced for task__hpPaggR.
+
+---
+
+## Golden Solution Approach
+
+From task__wLxrjJZ (the only trial where a golden approach was fully described):
+
+The reference solution (`solve.sh`) copies pre-authored files from `/solution/` — the suite and report were written offline rather than generated live. The reference test_cache.py is:
+- A **behaviorally-grounded pytest suite** exercising the public API only (black-box, no introspection)
+- Covers: capacity validation, TTL expiry semantics, LRU eviction ordering (including recency on get()), metric tracking (hits/misses/evictions), concurrency stress, and state-machine property tests
+- Designed to kill all **20 mutants** within the **45-second per-mutant budget**
+- Runs cleanly within the 300-second verifier window
+
+The reference root_cause.txt is a 4-paragraph analysis documenting:
+1. `get()` — recency side-effect bug (moves to MRU before checking expiry)
+2. `put()` — MRU eviction via `popitem(last=True)` instead of LRU
+3. `_is_expired()` — strict `&gt;` instead of `&gt;=` for TTL boundary
+4. `cleanup_expired()` — non-atomic lock release between snapshot and per-key deletion
+
+Both trials agree on this characterization. No discrepancy between trials.
+
+---
+
+## Agent Approach
+
+**Convergence across trials:** Both agents independently followed the same sequence: read CACHE_SPEC.md → read reference and buggy implementations → examine all 20 mutants → write test_cache.py → run mutation tests. Both agents correctly identified the four bug categories before writing any tests (task__wLxrjJZ step 5; task__hpPaggR steps 3–7). This suggests the diagnostic phase is well within model capability.
+
+**Per-trial divergence:**
+
+- **task__wLxrjJZ**: Agent (presumably standard model, 81 steps) wrote the full test suite as a single shell heredoc with ~15,000+ character keystrokes string. The closing delimiter was truncated, wedging the terminal. The agent never recovered and produced no output.
+
+- **task__hpPaggR**: Agent (DeepSeek v4-pro, 53 steps) wrote an initial test suite with 10-second concurrency tests, ran partial mutation testing (steps ~15–48), observed timing problems (mutants 01–05 visible before agent timeout at step ~49–52), and at step 53 rewrote test_cache.py reducing concurrency durations from 10s to 4s. Both artifacts were saved but the verifier timed out. The final mutation kill rate is unconfirmed.
+
+**Technique convergence:** Both agents used shell `cat` heredoc commands to write files — the same strategy, with task__wLxrjJZ's version being a single oversized write and task__hpPaggR's version working correctly. Both agents independently included concurrency/thread-safety tests in their suites, consistent with the spec's explicit mention of thread-safety as a difficulty crux.
+
+---
+
+## Approach Diff
+
+**task__wLxrjJZ — File-write strategy failure:**
+The divergence from the golden approach was operational, not conceptual: the agent attempted to write the complete ~15,000-character test file in a single heredoc keystrokes string. The golden approach (and any production-competent approach) would use either chunked writes, Python's `open(...).write(...)` from a subprocess, or multiple sequential file operations. The agent's decision to use a single monolithic heredoc exceeded the terminal session's transmission limit, silently truncating the closing delimiter. This one decision caused all downstream failures.
+
+**task__hpPaggR — Concurrency test weight:**
+The agent's divergence was in test design economics: it used CPU-intensive concurrency stress tests (N=30,000 entries, 20 threads per test, multi-second loops) rather than lightweight lock-assertion approaches (e.g., `threading.Event` barriers to deterministically detect lock-hold interleaving). The golden suite runs all 25 verifier pytest passes within 300 seconds on 2 CPUs; the agent's suite required approximately 250+ seconds plus subprocess overhead, pushing past the verifier budget. The agent diagnosed the problem and tried to fix it (reducing from 10s to 4s), but the fix was insufficient and the agent was cut off before validating the revised suite.
+
+In both cases, the divergence is in **execution mechanics and resource awareness**, not in the conceptual model of what tests to write or what bugs to find.
+
+---
+
+## Validity of Agent Approach
+
+Both trials returned **PASS on approach_validity**. This is a consistent signal: both agents used legitimate, instruction-permitted approaches that were defeated by execution strategy errors rather than conceptual misunderstandings or undisclosed spec constraints.
+
+- task__wLxrjJZ: A shell heredoc is a valid file-writing strategy; the agent's error was a tool-use sizing mistake. Python-based file writes would have avoided the issue entirely. This is a **legitimate agent limitation** (poor tool-use robustness for large file writes).
+
+- task__hpPaggR: Behavioral black-box concurrency tests are explicitly encouraged by the spec. The agent's error was designing tests too resource-intensive for the verifier's constrained environment. The 300-second verifier window is genuinely tight for exhaustive mutation testing with concurrency harnesses on 2 CPUs. This sits at the boundary between **agent limitation** (not optimizing for verifier resource budget) and **task/verifier configuration** (300-second window may be insufficient for the expected test design patterns).
+
+**Assessment:** The failures look like **genuine agent difficulty** rather than a task/verifier defect, with one caveat: the 300-second verifier timeout for a task explicitly requiring mutation testing of 20 mutants warrants scrutiny. If the intended solution also uses concurrency tests (even lightweight ones), the 300-second window should be validated against the reference solution's actual runtime on the verifier hardware. If the reference solution passes comfortably, the gap is purely agent design skill; if the reference solution is close to the limit, the verifier timeout configuration is a risk factor.
+
+---
+
+## Rubric Aggregate
+
+| Criterion | PASS | FAIL | NA | Pattern |
+|---|---|---|---|---|
+| task_specification | 2 | 0 | 0 | Spec is clear and complete in both trials; no gaps contributed to failures |
+| reward_hacking | 2 | 0 | 0 | No manipulation attempts detected in either trial |
+| difficulty_crux | 1 | 1 | 0 | task__wLxrjJZ FAIL: agent failure was a tool-use wedge unrelated to intended difficulty (black-box contract + mutation design). task__hpPaggR PASS: agent explicitly engaged the concurrency/timing trade-off that is the stated difficulty crux |
+| near_miss | 1 | 1 | 0 | task__hpPaggR FAIL: agent produced structurally sound, near-complete artifacts but lost to verifier timing. This trial's reward=null genuinely does not reflect the agent's conceptual capability |
+| refusals | 2 | 0 | 0 | No refusals in either trial; no reword needed |
+| low_timeout | 1 | 1 | 0 | task__hpPaggR FAIL on both agent timeout (cut off mid-productive-rewrite at step 53) and verifier timeout (300s insufficient for 25 mutation test passes with concurrency tests on 2 CPUs). **The 300-second verifier budget and the test-design expectations of this task deserve re-examination** |
+| approach_validity | 2 | 0 | 0 | Both failures are legitimate agent limitations; no task/verifier defect conclusively identified |
+
+**Refusals note:** No FAIL — no reword needed.
+
+**Near-miss note:** One FAIL (task__hpPaggR). The task may appear harder than it is for agents that design resource-efficient tests: a lightweight lock-assertion harness could likely pass all mutation checks within budget. The concurrency time budget is doing meaningful work as a difficulty dimension, but agents that happen to design heavier concurrent tests get penalized by infrastructure rather than by test correctness.
+
+**Low-timeout note:** One FAIL with dual timeouts (agent + verifier). The verifier's 300-second window combined with 20 mutants × pytest-subprocess overhead represents a structurally tight budget that should be explicitly validated against the reference solution's runtime on equivalent hardware.
+
+---
+
+## Summary
+
+TASK FIX SUGGESTED — the 300-second verifier timeout is structurally marginal for a task requiring 20+ mutation test runs with concurrency harnesses; validate the reference solution's actual verifier runtime on target hardware and increase the verifier budget if needed, and agents should use Python file-write calls rather than single oversized heredocs to avoid terminal-wedge failures.
+
+</details>
+
+📋 [View logs & artifacts](https://github.com/handshake-project-dynamo/dynamo-ed59409-software-engineering/actions/runs/30596712262)
+
+<!-- Sticky Pull Request Commentpass2-timeout-check -->
+--- COMMENT ---
+## 🔍 Adversarial Cheat-Pass (advisory)
+
+_Red-teams the verifier: can the tests pass without solving the task? **Advisory only — does not gate the PR.** A FAIL here means a human should check whether the tests are exploitable._
+
+Bash is denied, but I've read the checker (`test_outputs.py`) in full and can evaluate the exploit against its exact logic by hand. Here is the review.
+
+# 🔺 Adversarial Verifier Review
+
+**Verdict:** FAIL
+
+**Exploit**
+
+The task has two scored deliverables: `test_cache.py` (must pass reference, the reformatted-reference, detect buggy, and kill 20/20 mutants) and `root_cause.txt` (a per-defect analytical report). The test suite is genuinely hard to fake — killing all 20 mutants (e.g. `mutant_02` returns `None` from `get`, `mutant_11` uses `capacity < 0`, `mutant_08` evicts MRU) requires real behavioral assertions, so that half is robustly verified. **But `root_cause.txt` is validated by keyword/surface-structure matching only — its factual correctness is never checked.** A report that states the exact *opposite* of every real defect passes every report test.
+
+Concrete passing-but-wrong `root_cause.txt` (paired with any genuine mutation-killing suite):
+
+- ¶1 (get): *"The get() method is completely correct and never disturbs recency for an expired entry; the move_to_end call executes only after the value is checked, so an expired lookup before deletion cannot promote the key to most recently used…"* — reality is the reverse (buggy `get` calls `move_to_end` **before** the expiry check).
+- ¶2 (put): *"…eviction perfectly… popitem eviction uses last=false so LRU ordering is respected…"* — buggy code actually uses `last=True` (evicts LRU wrongly).
+- ¶3 (`_is_expired`): *"…uses the correct comparison because it already compares now >= expire_at, so no strict versus non-strict boundary error exists…"* — buggy code actually uses `now > expire_at`.
+- ¶4 (`cleanup_expired`): *"…is fully atomic because it holds the lock for the entire sweep; no race can occur… the non-atomic pattern is absent…"* — buggy code actually replaces `with self._lock:` with `if True:`.
+
+Walking `test_root_cause_report_explains_distinct_mechanisms` (`test_outputs.py:294`) and `_paragraph_has_explanation` (`:188`) against this text: each paragraph clears `min_words≥25`, `uniqueness_ratio≥0.35`, ≥2 structure words, a connective (`before`/`performs`/`because`), and punctuation; each hits its method keyword + a primary keyword (`recency`/`move_to_end`, `popitem`/`eviction`, `condition`/`comparison`, `lock`/`atomic`) + a context keyword (`before`, `last=false`, `>=`/`strict`, `race`/`concurrent`). The distinctness cross-check (`:378-404`) sees all four defect tags in four separate paragraphs → `covered_defects == 4`. Size (`:251`, ≥350 B) and word count (`:305`, ≥120) both pass. The report is entirely fabricated/false yet passes — the required analysis (instruction.md: "Describes the incorrect code-level mechanism", "genuine analytical understanding") is not solved. → **Fix:** the report cannot be graded by keyword heuristics; drop `test_root_cause_report_explains_distinct_mechanisms`' free-text matching and instead grade correctness against the known buggy diff — e.g. require the direction-specific tokens tied to the real defect (`move_to_end`+`before`+`expired`, `last=true`/`last=False`→`last=True`, `> ` not `>=`, `if true`/lock-released) and/or route the report to an LLM rubric judge that scores whether the stated mechanism matches `oracle_fixtures.source_for("buggy")`. At minimum, assert the report does NOT claim the buggy code is correct.
+
+**Gaps reviewed**
+
+- **Report correctness unverified (primary gap)** — `test_outputs.py:294-404`. `_paragraph_has_explanation` (`:188-235`) checks only keyword presence + word count + a 35%-uniqueness ratio + a hard-coded `connectives`/`structure_words` list + a punctuation char. None of these constrain *what is claimed*; grammatical-but-false prose passes. The context keyword list for defect 3 (`:354`) even includes both `>=` and `strict`/`non-strict`, so a paragraph asserting either direction passes — the correct-vs-incorrect distinction is unenforceable.
+- **Schema/structure of report** — the distinctness cross-check (`:378-404`) only requires 4 defect *tags* to appear in distinct paragraphs; it never verifies the described mechanism is the buggy one, nor forbids extra false claims.
+- **Test-suite half is sound (no exploit found here)** — `test_mutation_kill_rate` (`:407`), `test_buggy_implementation_is_detected_by_behavior` (`:288`), `test_reference_alt_formatting_passes` (`:270`) collectively force genuine black-box behavioral coverage; the AST black-box guard (`:34-90`) blocks source/introspection escape hatches. I could not fake this half — but I don't need to: the report gap alone yields a passing submission whose required analysis is fabricated and incorrect.
+- **No numeric-tolerance fields** exist in this task, so the confidence-interval / degenerate-value / reverse-engineered-verdict classes don't apply; the analogous weakness is the report's categorical "which mechanism" claim, which is fully reverse-engineerable from keyword lists without any real analysis.
+
+<!-- Sticky Pull Request Commentadversarial-review -->
+--- COMMENT ---
+<!-- AVA-GATE -->
+## 🤖 Automated Review (AVA ∪ Deep-Review union gate)
+
+_This automated review **gates** the PR. Every item under **Blocking Issues** must be addressed and pushed; the gate re-runs on push. Only major issues are blocking. **Human reviewers are stricter than this check**: passing it does not guarantee acceptance._
+
+**Verdict:** BLOCK
+
+**Blocking Issues**
+- **`verifier_coverage`** (AVA)
+    - **What this check verifies:** an acceptance-boundary gap was found in how this task is graded.
+    - **How your task failed it:** at `solution/test_cache.py test_expired_get_does_not_call_move_to_end`, asserts moves == [] which buggy get() violates; expected Suite fails (returncode != 0), but the verifier would instead move_to_end tracking list non-empty -> assert fails; boundary assert fails; MRU eviction assert fails; lock.entries != 1 fails. Suite fails.
+- **`verifier_coverage`** (AVA)
+    - **What this check verifies:** an acceptance-boundary gap was found in how this task is graded.
+    - **How your task failed it:** at `solution/test_cache.py test_all_public_operations_share_one_synchronization_boundary`, kills lock-removal mutants 16 & 17; expected All 20 return non-zero (killed), but the verifier would instead Traced each: m1 eviction/capacity fail; m2/m5 value/default fail; m3 update-recency fail; m4/m20 stats fail; m6/m12 ttl fail; m7 expirations fail; m8 MRU evict fail; m9 delete-miss stats fail; m10 co….
+
+**Advisory (non-blocking) — minor findings**
+_These do not block the PR; consider addressing them, but they are not required for this check to pass._
+- **`sound_verifier`** (AVA)
+    - **What this check verifies:** the verifier must reject work that does not satisfy the task; a wrong or invalid submission is currently accepted.
+    - **How your task failed it:** at `tests/test_outputs.py _assert_suite_does_not_select_implementation: forbidden_calls set`, forbidden_calls={..,'open'} is only checked in the `isinstance(node, ast.Call) and isinstance(node.func, ast.Name)` branch. `io.open(...)` and `pathlib.Path(...).open()` are ast.A…; expected Rejected: instruction 1.d forbids reading/inspecting source and requires observable behaviour testing; this suite is pure source fingerprinting, but the verifier would instead test_suite_uses_black_box_isolation passes because no forbidden Name-call/attribute/module/literal is present; the AST walker never flags io.open or the concatenated filename.
+- **`sound_verifier`** (AVA)
+    - **What this check verifies:** the verifier must reject work that does not satisfy the task; a wrong or invalid submission is currently accepted.
+    - **How your task failed it:** at `tests/test_outputs.py _assert_suite_does_not_select_implementation: forbidden_calls / forbidden_attributes / forbidden_modules`, `open` guarded only under `isinstance(node.func, ast.Name)`; `os`,`io`,`builtins`,`pathlib` absent from forbidden_modules; plain `open`,`read` absent from forbidden_attributes; expected Rejected: instruction 1.d forbids reading/inspecting source; requires behavioural testing, but the verifier would instead test_suite_uses_black_box_isolation passes: no forbidden Name-call, module import, attribute, or matching path literal is present.
+- **`verifier_coverage`** (AVA)
+    - **What this check verifies:** an acceptance-boundary gap was found in how this task is graded.
+    - **How your task failed it:** at `MAPPER OUTPUT requirement_coverage R5 status=fully_verified vs edge_cases`, Marks fully_verified yet notes 'only checks string constants, not dynamically constructed names'; expected R5/R6 should be rated partially_verified with an executable anti-fingerprint probe, but the verifier would instead AST blocklist passes bypass suites (C1/C2).
+
+_Routing: block · flagged by: AVA._
+
+<!-- Sticky Pull Request Commentava-review -->
+--- COMMENT ---
+## 🤖 Automated Review
+
+_This automated review **gates** the PR. Every item under **Blocking Issues** must be addressed and
+pushed — the pipeline re-runs on push; each bullet ends with the concrete fix. **Advisory Notes** are
+optional improvements and never block. **Human reviewers are stricter than this check**: passing it
+does not guarantee acceptance._
+
+**Verdict:** PASS
+
+**Oracle-Derivation:** clean — the Oracle solution (`solution/solve.sh`) copies two pre-authored artifacts; `solution/test_cache.py` imports only the module-under-test (`from lru_cache import TTLLRUCache`) plus `pytest`/`hypothesis`, hard-codes no non-derivable table/threshold, and injects no undocumented default. Every expected value is derivable from agent-visible `CACHE_SPEC.md` + `lru_cache_ref.py` + `lru_cache_buggy.py`.
+
+**Blocking Issues**
+- None — no blocking gap-rubric failures or material coverage holes found.
+
+**Advisory Notes**
+1. `task.toml` / `tests/test_outputs.py` — the pass@2 job flagged the **300 s verifier budget** as structurally marginal: `test_mutation_kill_rate` runs 20 mutant passes + 3 reference + 1 alt-format + 1 buggy = 25 pytest subprocesses (each capped at 45 s). The Oracle suite (lightweight concurrency tests) fits comfortably, but trial `task__hpPaggR` timed out at exactly 300 s with a heavy 30 000-entry/20-thread suite. Not a defect (the agent's design was the cost driver, and each subprocess is bounded), but worth validating the reference solution's real verifier-hardware runtime before the pass@5 spend, and possibly widening `[verifier].timeout_sec`.
+2. `tests/test_outputs.py:316-376` — the `root_cause.txt` grader uses fixed keyword lists (e.g. defect 3 requires one of `boundary/condition/comparison/compar` **and** one of `>=`/`> `/`strict`/`non-strict`). A correct but differently-worded analysis could miss a bucket. The four defect *categories* are explicitly disclosed in `instruction.md:37-41`, so this is acceptable, but the gate is somewhat brittle.
+3. `solution/test_cache.py` — the reference suite leans on real wall-clock `time.sleep(0.03/0.08)` boundaries. On a loaded 2-CPU verifier these could theoretically flake; mitigated by `test_reference_implementation_passes_repeatedly` running the suite 3× before accepting it.
+4. `environment/Dockerfile:7` — `hypothesis` is baked into the shared image and is used only by the Oracle's property test; it is a mainstream testing library (not an exotic Oracle-only tool), so it does not telegraph *the* solution, but it mildly favors a property-based approach.
+5. Open-ended bypass hunt (§2, advisory): no confirmed leakage vector. The strongest theoretical bypass — source-fingerprinting the implementation text — is blocked twice (AST ban on `open`/`read_text`/`__file__`/`inspect` in `test_outputs.py:54-90` **and** the `test_reference_alt_formatting_passes` reformatted-reference check). A reference-import bypass is impossible because at verify time `PYTHONPATH` points only at the sandbox where `lru_cache` wraps `cache_under_test` (`test_outputs.py:144`); the agent's `/app` copies are off-path.
+
+<details><summary>Full deep-review assessment</summary>
+
+### Unverified requirements
+Requirement → assertion map (all material requirements covered):
+
+| Requirement (`instruction.md`) | Assertion |
+|---|---|
+| Output files `/app/test_cache.py`, `/app/root_cause.txt` exist, regular, non-symlink, in `/app` | `test_scored_output_files_exist_and_are_regular` + `_safe_output_path` (`test_outputs.py:21-31,238-243`) |
+| Report ≥350 bytes | `test_root_cause_report_size:251` |
+| (a) 100% pass on reference | `test_reference_implementation_passes_repeatedly` (3 runs, `:260-267`) |
+| (b) ≥1 fail on buggy | `test_buggy_implementation_is_detected_by_behavior:288-291` |
+| (c) kill all 20 mutants | `test_mutation_kill_rate:407-419` (`len(killed)==20`) |
+| (d) black-box: no `CACHE_MODULE`/`lru_cache_ref`/`lru_cache_buggy`/`mutants.`; no introspection | `_assert_suite_does_not_select_implementation:34-90` (AST string + import + call + attribute walk) |
+| (d) works against behaviourally-equivalent reformat | `test_reference_alt_formatting_passes:270-285` |
+| (e) ≤45 s per run | `subprocess.run(..., timeout=45)` in `_run_suite_against:152` (a timeout raises → test fails) |
+| Report ≥120 words, ≥4 paragraphs | `test_root_cause_report_explains_distinct_mechanisms:304-314` |
+| Per-defect: names method + mechanism + context + ≥25 words + ≥35% unique | `_paragraph_has_explanation:188-235` applied per defect (`:316-376`) |
+| All 4 defect categories in *distinct* paragraphs | distinctness cross-check `:378-404` (`covered_defects >= 4`) |
+
+No coverage holes. Expected values are independently derivable: the eviction-count/`stats()` expecteds trace directly to `CACHE_SPEC.md §2`; `_is_expired(now, now) is True` (`test_cache.py:135`) traces to the `current_time >= expire_at` boundary in `CACHE_SPEC.md:74`. No copy-pasted/off-by-one/wrong-unit expecteds. No fuzzy numeric tolerances — the gates are exact (20/20, ≥120 words, ≥350 bytes). Note the fixtures are self-contained and deterministic: the verifier regenerates every implementation from `oracle_fixtures.REFERENCE` via string replacement, and the shipped `mutants/mutant_01.py`/`mutant_16.py` match the regenerated definitions (`oracle_fixtures.py:129-171`), so what the agent optimizes against locally equals what the verifier scores.
+
+### Trajectory analysis
+No trace-integrity problems. Both pass@2 trials are clean (`analysis.json` `reward_hacking: pass` for both): no `/logs/verifier/reward.txt` writes, no reads of `solution/`/`tests/`, no monkey-patching of the harness, no PATH interception. Both agents did the intended work — read `CACHE_SPEC.md`, diffed reference vs buggy, and correctly enumerated all four defects before writing tests.
+
+True difficulty (thin, 2 trials — graded conservatively): **neither failure is a clean valid-crux fail.**
+- `task__wLxrjJZ` (reward 0): terminal wedge — an oversized single heredoc truncated its closing delimiter and the agent never materialized a file (`difficulty_crux: fail`, but the fail is a tool-use artifact unrelated to the crux). `decisive_rule_disclosed: pass` (file-existence rule is fully disclosed).
+- `task__hpPaggR` (reward null): dual timeout — agent cut off mid-rewrite at 3600 s **and** the verifier hit 300 s with a 30 000-entry/20-thread suite (`near_miss: fail`, `low_timeout: fail`); `decisive_rule_disclosed`/`spec_consistency`: `not_applicable` (no verifier output). Notably its `difficulty_crux: pass` — the agent *did* engage the intended concurrency-cost trade-off.
+
+Because both fails are infra/tool artifacts (excluded from difficulty evidence) and one trial actually engaged the crux, the 2-trial sample cannot support a positive "difficulty is real from the crux" call, nor does it positively show the difficulty is *purely* an artifact (the Oracle passes the 300 s budget comfortably). Graded **N/A** rather than FAIL, per the thin-sample rule. Flagged for pass@5: watch whether valid fails cluster on the intended crux (mutation-killing + concurrency design) versus the 300 s verifier ceiling.
+
+### Domain-expert read
+End-to-end traceability holds. Each requirement traces instruction → Oracle behavior → assertion: e.g. spec boundary `now >= expire_at` (`CACHE_SPEC.md:74`) → reference `_is_expired` (`lru_cache_ref.py:29`) → `test_cache.py:130-135` → and the buggy `now > expire_at` (`lru_cache_buggy.py:29`) is what makes `test_buggy_implementation_is_detected_by_behavior` fire. Cross-component alignment:
+- **instruction ↔ environment**: `/app/lru_cache.py` selector, `CACHE_MODULE` semantics, `mutants.mutant_01..20`, `run_mutation_tests.py`, `CACHE_SPEC.md` all present under `environment/data` (COPY'd to `/app`), matching `instruction.md:1-10`.
+- **verifier independence**: grading never touches agent-writable `/app` sources; it rebuilds impls from `oracle_fixtures.py` overlaid under `tests/`. Tampering with `/app/lru_cache_ref.py` or the mutants cannot affect the score.
+- **no hidden knowledge**: this is effectively a white-box task — the agent can read both the reference and buggy implementations, so every "decisive" answer (the four defects, the exact metric/eviction semantics) is directly discoverable; nothing lives only in `task.toml`/`solution/`.
+
+Minor expert observation (non-blocking): the agent-visible `lru_cache_buggy.py` implements the cleanup defect as per-key re-locking (non-atomic sweep), whereas the verifier's regenerated `buggy` fixture drops the lock entirely (`if True:`). This is harmless — buggy-detection only needs ≥1 failing test, and `root_cause.txt` is graded on category/method keywords (both variants exhibit the same "non-atomic cleanup" category), which the report correctly covers.
+
+### Gap rubric
+- complete_test_coverage — **PASS**: every stated deliverable (both files, reqs a–e, all four report constraints incl. counts/distinctness) maps to a real assertion.
+- correct_expected_results — **PASS**: expecteds derive from `CACHE_SPEC.md`/reference logic, not echoes of an Oracle quirk.
+- decisive_answer_discoverable — **PASS**: white-box; ref+buggy+spec are all agent-visible; trial verdicts corroborate (one `pass`, one `n/a`).
+- granular_specific_tests — **PASS**: 8 focused test functions; `test_mutation_kill_rate` names surviving mutants in its failure message.
+- tolerances_justified — **PASS**: no fuzzy numeric tolerances; gates are exact and derivable.
+- readable_tests — **PASS**: plain AST/subprocess logic; no base64/opaque hashes.
+- graceful_failure — **PASS**: `test.sh` writes `0` whenever pytest exits non-zero (incl. import/collection errors); `_safe_output_path` uses assert/`pytest.fail`, not uncaught crashes.
+- verifier_performance — **PASS**: every subprocess call bounded at `timeout=45`; Oracle fits well under 300 s (aggregate-budget tension noted, Advisory 1).
+- fixtures_and_tamper_independence — **PASS**: fixtures baked in `tests/oracle_fixtures.py`, regenerated deterministically, no Oracle import, no reliance on agent-writable ground truth.
+- traceable_requirements — **PASS**: both-directions trace intact; no test enforces an undisclosed requirement.
+- instruction_environment_alignment — **PASS**: all described files/paths/commands exist as stated.
+- solution_alignment — **PASS**: `solve.sh` only copies two artifacts; no forbidden actions, no verifier-internal knowledge; Oracle Derivation clean.
+- no_contradictions — **PASS**: instruction/task.toml/env/solution/tests mutually consistent.
+- no_orphaned_behavior — **PASS**: buggy impl + 20 mutants + spec + runner all serve the agent workflow.
+- metadata_reality_alignment — **PASS**: resources/timeouts plausible for a 4h SDET task (300 s tension noted, not a false claim).
+- agent_traces_clean — **PASS**: both traces legitimate.
+- trivial_bypasses_blocked — **PASS**: reward-file/PATH/ground-truth/source-fingerprint/reference-import routes all infeasible (AST ban + alt-format check + off-path sandbox).
+- difficulty_evidence — **N/A**: 2-trial sample; both fails are tool-wedge/timeout artifacts, one trial engaged the crux — cannot support a call.
+- unix_line_endings — **PASS** (advisory): no CRLF observed in read files.
+- text_only_assets — **PASS**: all `.md`/`.py`/`.txt`.
+- no_brittle_time_dependence — **PASS**: verifier fixtures fully deterministic (candidate suite's short sleeps noted, Advisory 3).
+- no_solution_only_deps_in_agent_image — **PASS**: `hypothesis` is a general testing lib, not an Oracle-only tell (minor, Advisory 4).
+- environment_permissions_and_services — **PASS**: no services; verifier materials overlaid at verify time, not in agent image.
+- no_prompt_injection_or_obfuscation — **PASS**: agent-readable content clean.
+- dockerfile_structuring — **PASS**: single stage, pinned pip block, `COPY data /app`, no compiled artifacts or opaque archives.
+
+### CI escapes (optional)
+None observed — CI-covered criteria (build/oracle/no-op validation, anti-cheat, instruction alignment) appear consistent with the definition on read-only inspection.
+
+</details>
+
+<!-- Sticky Pull Request Commentautomated-review -->
+--- COMMENT ---
+## 🚦 Tier-1 fix-addressal   ⏸️ Some required fixes not yet attempted — Tier 2 held
+
+No diff since the review — required fixes not attempted. [cumulative compare 75d5e96…ac2a9fb: 0 files]
+
+- ❌ **C3** (Narrow / Hardcodable Held-Out Coverage): no changes pushed since the review
+- ❌ **B4** (Undocumented Requirement Enforced): no changes pushed since the review
+- ❌ **C2** (Over-Permissive Tolerance or Threshold): no changes pushed since the review
+
+<!-- TIER1-ADDRESSAL -->
+<!-- TIER1-BASE:ac2a9fb2381c2d7cfd9ae96cbfe33a23bfd9ab84 -->
+<!-- TIER1-STATE:{"head_sha":"ac2a9fb2381c2d7cfd9ae96cbfe33a23bfd9ab84","base_sha":"75d5e96929252f4e1314554e8081af8d6326670e","verdict":"HOLD","fixes":{"C3":false,"B4":false,"C2":false}} -->
+
+<!-- Sticky Pull Request Commenttier1-addressal -->
+--- COMMENT ---
+## 🤖 Per-Check QC — Task Soundness   ⛔ Needs revision
+
+**3 issues must be fixed before this task can pass.** Fix them, then push to re-run (the pipeline re-runs automatically).
+
+### 🔴 Must fix / resolve
+
+**1. Narrow / Hardcodable Held-Out Coverage** — `test_cache.py`
+_What this means:_ The graded cases are so few or predictable that a submission can hardcode them instead of actually solving the task.
+_What we found:_ With the correct test_cache.py kept, replaced root_cause.txt with keyword salad ('expired get recency mru move_to_end evict lru least recently used ... cleanup lock atomic race concurrent') + 150x 'padding' (178 words, zero real analysis). test_root_cause_report_explains_distinct_mechanisms PASSED…
+**Fix:** Broaden the held-out cases so a narrow/hardcoded solution fails; add unseen coverage.
+
+**2. Undocumented Requirement Enforced** — `root_cause.txt`
+_What this means:_ The tests enforce a requirement the instructions never mention, so someone following the instructions can still fail.
+_What we found:_ The verifier enforces undisclosed numeric thresholds on `root_cause.txt` that appear nowhere in `instruction.md` (which only says: "A plain text report documenting the root causes of the defects... explain the underlying code-level mechanism for each bug"). Break 1 — undocumented 350-byte minimum.…
+**Fix:** Document the enforced requirement in instruction.md, or stop grading it.
+
+**3. Over-Permissive Tolerance or Threshold** — `/app/test_cache.py`
+_What this means:_ The tests' pass threshold is so loose that clearly wrong answers still pass.
+_What we found:_ The root-cause artifact is graded only by size/word-count thresholds plus a substring keyword aggregate, which accepts a materially-wrong report. Break (concrete): submit a `/app/test_cache.py` that genuinely passes the behavioral gates (kills all 20 mutants, passes reference, fails buggy) together…
+**Fix:** Tighten the tolerance/threshold so wrong answers no longer pass.
+
+<details><summary>40 checks passed · 1 minor advisory</summary>
+
+**Minor advisory (non-blocking):**
+- Correctness Not Statically Confirmable — `test_outputs.py:96`: Task success is entirely execution-gated and cannot be statically confirmed. The verifier `tests/test_outputs.py` decides the reward by actually running the…
+
+<sub>44 checks & probes run.</sub>
+</details>
+
+<!-- QC-STICKY -->
+
+<!-- QC-BASE:75d5e96929252f4e1314554e8081af8d6326670e -->
+<!-- QC-FIXES-B64:W3siY2lkIjoiQzMiLCJiYXNlIjoiQzMiLCJuYW1lIjoiTmFycm93IC8gSGFyZGNvZGFibGUgSGVsZC1PdXQgQ292ZXJhZ2UiLCJzZXYiOiJNYWpvciIsImV2aWRlbmNlIjoiV2l0aCB0aGUgY29ycmVjdCB0ZXN0X2NhY2hlLnB5IGtlcHQsIHJlcGxhY2VkIHJvb3RfY2F1c2UudHh0IHdpdGgga2V5d29yZCBzYWxhZCAoJ2V4cGlyZWQgZ2V0IHJlY2VuY3kgbXJ1IG1vdmVfdG9fZW5kIGV2aWN0IGxydSBsZWFzdCByZWNlbnRseSB1c2VkIC4uLiBjbGVhbnVwIGxvY2sgYXRvbWljIHJhY2UgY29uY3VycmVudCcpICsgMTUweCAncGFkZGluZycgKDE3OCB3b3JkcywgemVybyByZWFsIGFuYWx5c2lzKS4gdGVzdF9yb290X2NhdXNlX3JlcG9ydF9leHBsYWluc19kaXN0aW5jdF9tZWNoYW5pc21zIFBBU1NFRCBhIiwibG9jIjoidGVzdF9jYWNoZS5weSJ9LHsiY2lkIjoiQjQiLCJiYXNlIjoiQjQiLCJuYW1lIjoiVW5kb2N1bWVudGVkIFJlcXVpcmVtZW50IEVuZm9yY2VkIiwic2V2IjoiTWFqb3IiLCJldmlkZW5jZSI6Iltjb25jcmV0ZSBjb3VudGVyZXhhbXBsZV0gW0NPTkNSRVRFXSBUaGUgdmVyaWZpZXIgZW5mb3JjZXMgdW5kaXNjbG9zZWQgbnVtZXJpYyB0aHJlc2hvbGRzIG9uIGByb290X2NhdXNlLnR4dGAgdGhhdCBhcHBlYXIgbm93aGVyZSBpbiBgaW5zdHJ1Y3Rpb24ubWRgICh3aGljaCBvbmx5IHNheXM6IFwiQSBwbGFpbiB0ZXh0IHJlcG9ydCBkb2N1bWVudGluZyB0aGUgcm9vdCBjYXVzZXMgb2YgdGhlIGRlZmVjdHMuLi4gZXhwbGFpbiB0aGUgdW5kZXJseWluZyBjb2RlLWxldmVsIG1lY2hhbmlzbSBmb3IgZWFjaCBidWdcIikuXG5cbkJyZWEiLCJsb2MiOiJyb290X2NhdXNlLnR4dCJ9LHsiY2lkIjoiQzIiLCJiYXNlIjoiQzIiLCJuYW1lIjoiT3Zlci1QZXJtaXNzaXZlIFRvbGVyYW5jZSBvciBUaHJlc2hvbGQiLCJzZXYiOiJNYWpvciIsImV2aWRlbmNlIjoiWzEvMSBzYW1wbGVzIEZBSUxdIFRoZSByb290LWNhdXNlIGFydGlmYWN0IGlzIGdyYWRlZCBvbmx5IGJ5IHNpemUvd29yZC1jb3VudCB0aHJlc2hvbGRzIHBsdXMgYSBzdWJzdHJpbmcga2V5d29yZCBhZ2dyZWdhdGUsIHdoaWNoIGFjY2VwdHMgYSBtYXRlcmlhbGx5LXdyb25nIHJlcG9ydC5cblxuQnJlYWsgKGNvbmNyZXRlKTogc3VibWl0IGEgYC9hcHAvdGVzdF9jYWNoZS5weWAgdGhhdCBnZW51aW5lbHkgcGFzc2VzIHRoZSBiZWhhdmlvcmFsIGdhdGVzIChraWxscyBhbGwgMjAgbXV0YW50cywgcGFzc2VzIHJlZmVyZW5jZSwgZmEiLCJsb2MiOiIvYXBwL3Rlc3RfY2FjaGUucHkifV0= -->
+
+<!-- Sticky Pull Request Commentqc -->
+--- COMMENT ---
+<!-- dynamo-suggest slug=dynamo-mutation-cache-test date=2026-07-30 -->
+## 🛠️ Pass@2 Difficulty Suggestion
+
+_An automatic suggestion to help this task reach a healthy pass@2 (≥1 valid agent failure).
+**Advisory only — it does not gate the PR**, and it deliberately avoids revealing the reference
+solution or the verifier's internals. Human reviewers are stricter than any automated check._
+
+**Root cause:** Both trials failed identically due to an undersized agent timeout, not a task/verifier defect. Both agents were cut off at exactly the 1800 s wall-clock limit while actively making forward progress (one running `pytest` on the reference suite at step 47, the other appending tests at step 49). Both had identified all four defects by step 5–6 and had already produced a 100%-passing reference suite with buggy detection, but never got to write `root_cause.txt` because they deferred it until after the mutation-tuning loop. The `low_timeout` rubric check FAILED in both trials; every other rubric dimension PASSED. This is a timeout/configuration issue, not a difficulty or soundness problem.
+
+**Suggested fix:** Raise `[agent].timeout_sec` in `submission/task/task.toml` from `1800` to at least `2700` (ideally `3000–3600`). The task scope is large — reading `CACHE_SPEC.md`, the reference, the buggy impl, and all 20 mutant files, writing 60–74 tests, running multiple full mutation passes (20 subprocess pytest invocations each), and writing a substantive report. 1800 s is not enough budget for an agent that sequences mutation-tuning before the report. A longer timeout lets the rubric evaluate whether the agent can actually complete both deliverables under fair conditions, which is what produces a *valid* pass/fail signal. No change to the verifier timeout (`180 s`) is needed — the verifier completed within budget in the one trial where the agent produced artifacts.
+
+**Also consider (optional):**
+1. The secondary, genuine difficulty signal is `mutant_17` (the non-atomic `cleanup_expired` mutant), which survived all 74 tests in one trial because single-threaded calls are behaviorally identical to the reference. That is the intended concurrency crux and should be preserved — do not weaken it. If after raising the timeout the agent *still* cannot kill it, consider whether the mutant is only distinguishable under non-deterministic thread interleaving (which pytest may not reliably trigger); if so, a small nudge in `CACHE_SPEC.md` clarifying the observable contract for `cleanup_expired` under concurrency (e.g., return-count semantics or atomicity guarantees) would make the requirement testable without reducing difficulty. But try the timeout increase first — the evidence suggests the agent simply ran out of time before reaching a robust concurrent test.
+
+<sub>🧩 <b>Why you're seeing this:</b> your task failed the pass@2 pre-check, so this is an automatic hint on how to make it harder — posted on your first attempt, or after you push a meaningful revision.<br/><b>How often:</b> this is difficulty suggestion <b>1 of 2</b> for this task today (UTC). Once you've used all 2, no more post until the counter resets at <b>midnight UTC</b> (next reset: `2026-07-31 00:00 UTC`).<br/><b>Note:</b> advisory only — it does <i>not</i> gate or block your PR, and it reused this run's pass@2 output (no fresh pass@2 was run).</sub>
+
+<!-- Sticky Pull Request Commentpass2-difficulty-suggestion-1 -->

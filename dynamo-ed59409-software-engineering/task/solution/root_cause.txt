@@ -1,0 +1,23 @@
+ROOT CAUSE ANALYSIS REPORT: TokenBucketRateLimiter Buggy Implementation
+
+Target Module: /app/rate_limiter_buggy.py
+
+Defect 1: Token Credit Leak on Rejected Requests
+- Location: TokenBucketRateLimiter.allow_request()
+- Mechanism: In the defective implementation, bucket[0] -= float(cost) is executed prior to validating whether available bucket tokens satisfy the requested cost (bucket[0] >= cost).
+- Impact: Attempting to allow a request that exceeds current token availability subtracts tokens from the client bucket even when returning False. This token credit leak causes rapid starvation of subsequent valid requests because rejected attempts wrongfully drain token reserves.
+
+Defect 2: Integer Elapsed Seconds Underflow in Refill
+- Location: TokenBucketRateLimiter._refill_bucket()
+- Mechanism: The method calculates time elapsed since the last update using integer conversion elapsed = int(now - last_time) rather than floating-point difference (now - last_time).
+- Impact: Sub-second request bursts occurring within millisecond intervals calculate elapsed as 0 seconds, entirely skipping token replenishment. High-throughput clients under continuous load experience token starvation because fractional refill increments are discarded.
+
+Defect 3: Refill Capacity Overflow Boundary Flaw
+- Location: TokenBucketRateLimiter._refill_bucket()
+- Mechanism: The token capping calculation uses tokens = min(cap + 10.0, tokens + elapsed * rate) instead of strict min(cap, tokens + elapsed * rate).
+- Impact: Replenished client buckets exceed their designated maximum capacity limit by up to 10 tokens. This boundary violation allows clients to burst beyond configured rate limits and bypass burst control bounds.
+
+Defect 4: Concurrency Lock Granularity Flaw in Quota Reconfiguration
+- Location: TokenBucketRateLimiter.set_client_quota()
+- Mechanism: The implementation releases self._lock immediately after invoking _refill_bucket() rather than holding the lock throughout the token recalculation and bucket dictionary assignment.
+- Impact: Reconfiguring client quotas becomes non-atomic. Concurrent threads executing allow_request() or refill() during a quota update encounter race conditions, stale capacity reads, lost quota updates, and un-synchronized stats counters.

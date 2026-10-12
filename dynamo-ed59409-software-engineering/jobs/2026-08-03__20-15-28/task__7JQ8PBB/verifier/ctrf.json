@@ -1,0 +1,101 @@
+{
+    "results": {
+        "tool": {
+            "name": "pytest",
+            "version": "8.4.1"
+        },
+        "summary": {
+            "tests": 9,
+            "passed": 9,
+            "failed": 0,
+            "skipped": 0,
+            "pending": 0,
+            "other": 0,
+            "start": 1785768360.489726,
+            "stop": 1785768412.175277
+        },
+        "tests": [
+            {
+                "name": "test_outputs.py::test_scored_output_files_exist_and_are_regular",
+                "status": "passed",
+                "duration": 0.0021472199987329077,
+                "start": 1785768360.7117865,
+                "stop": 1785768360.7180405,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_root_cause_report_size",
+                "status": "passed",
+                "duration": 0.0020685320014308672,
+                "start": 1785768360.71873,
+                "stop": 1785768360.7385485,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_suite_uses_black_box_isolation",
+                "status": "passed",
+                "duration": 0.019088418001047103,
+                "start": 1785768360.739246,
+                "stop": 1785768360.7619655,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_reference_implementation_passes_repeatedly",
+                "status": "passed",
+                "duration": 11.596066966001672,
+                "start": 1785768360.7625546,
+                "stop": 1785768372.3642852,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_reference_alt_formatting_passes",
+                "status": "passed",
+                "duration": 2.9549803600002633,
+                "start": 1785768372.365164,
+                "stop": 1785768375.3298235,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_reference_alt2_formatting_passes",
+                "status": "passed",
+                "duration": 3.0112335230005556,
+                "start": 1785768375.3305779,
+                "stop": 1785768378.3430734,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_buggy_implementation_is_detected_by_behavior",
+                "status": "passed",
+                "duration": 2.6365750409986504,
+                "start": 1785768378.3438544,
+                "stop": 1785768380.9883134,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_root_cause_report_explains_distinct_mechanisms",
+                "status": "passed",
+                "duration": 0.0083496240004024,
+                "start": 1785768380.989341,
+                "stop": 1785768380.9992776,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            },
+            {
+                "name": "test_outputs.py::test_mutation_kill_rate",
+                "status": "passed",
+                "duration": 31.17242342800091,
+                "start": 1785768380.9999003,
+                "stop": 1785768412.1742826,
+                "retries": 0,
+                "file_path": "test_outputs.py"
+            }
+        ]
+    }
+}

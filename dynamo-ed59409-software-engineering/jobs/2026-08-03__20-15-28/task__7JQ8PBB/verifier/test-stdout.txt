@@ -1,0 +1,20 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.12, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5, hypothesis-6.112.0
+collected 9 items
+
+../tests/test_outputs.py .........                                       [100%]
+
+==================================== PASSES ====================================
+=========================== short test summary info ============================
+PASSED ../tests/test_outputs.py::test_scored_output_files_exist_and_are_regular
+PASSED ../tests/test_outputs.py::test_root_cause_report_size
+PASSED ../tests/test_outputs.py::test_suite_uses_black_box_isolation
+PASSED ../tests/test_outputs.py::test_reference_implementation_passes_repeatedly
+PASSED ../tests/test_outputs.py::test_reference_alt_formatting_passes
+PASSED ../tests/test_outputs.py::test_reference_alt2_formatting_passes
+PASSED ../tests/test_outputs.py::test_buggy_implementation_is_detected_by_behavior
+PASSED ../tests/test_outputs.py::test_root_cause_report_explains_distinct_mechanisms
+PASSED ../tests/test_outputs.py::test_mutation_kill_rate
+============================== 9 passed in 52.00s ==============================

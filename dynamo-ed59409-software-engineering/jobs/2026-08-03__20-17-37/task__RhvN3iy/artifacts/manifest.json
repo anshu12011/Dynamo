@@ -1,0 +1,23 @@
+[
+  {
+    "source": "/logs/artifacts",
+    "destination": "artifacts/logs/artifacts",
+    "type": "directory",
+    "status": "empty",
+    "service": null
+  },
+  {
+    "source": "/app/test_limiter.py",
+    "destination": "artifacts/app/test_limiter.py",
+    "type": "file",
+    "status": "failed",
+    "service": null
+  },
+  {
+    "source": "/app/root_cause.txt",
+    "destination": "artifacts/app/root_cause.txt",
+    "type": "file",
+    "status": "failed",
+    "service": null
+  }
+]

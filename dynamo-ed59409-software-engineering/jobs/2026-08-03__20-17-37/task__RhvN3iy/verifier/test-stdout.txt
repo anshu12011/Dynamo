@@ -1,0 +1,209 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.12, pytest-8.4.1, pluggy-1.6.0
+rootdir: /tests
+plugins: json-ctrf-0.3.5, hypothesis-6.112.0
+collected 9 items
+
+../tests/test_outputs.py FFFFFFFFF                                       [100%]
+
+=================================== FAILURES ===================================
+________________ test_scored_output_files_exist_and_are_regular ________________
+
+    def test_scored_output_files_exist_and_are_regular():
+        """Verify deliverable files exist as regular non-symlink files in /app."""
+>       test_path = _safe_output_path(TEST_FILE)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/tests/test_outputs.py:430: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = PosixPath('/app/test_limiter.py')
+
+    def _safe_output_path(path: Path) -> Path:
+        """Validate that required artifact exists as a regular, non-symlink file inside /app."""
+>       assert path.exists(), f"Target deliverable is missing: {path}"
+E       AssertionError: Target deliverable is missing: /app/test_limiter.py
+E       assert False
+E        +  where False = exists()
+E        +    where exists = PosixPath('/app/test_limiter.py').exists
+
+/tests/test_outputs.py:191: AssertionError
+_________________________ test_root_cause_report_size __________________________
+
+    def test_root_cause_report_size():
+        """Verify report deliverable satisfies minimum byte length constraints."""
+>       test_path = _safe_output_path(TEST_FILE)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/tests/test_outputs.py:438: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = PosixPath('/app/test_limiter.py')
+
+    def _safe_output_path(path: Path) -> Path:
+        """Validate that required artifact exists as a regular, non-symlink file inside /app."""
+>       assert path.exists(), f"Target deliverable is missing: {path}"
+E       AssertionError: Target deliverable is missing: /app/test_limiter.py
+E       assert False
+E        +  where False = exists()
+E        +    where exists = PosixPath('/app/test_limiter.py').exists
+
+/tests/test_outputs.py:191: AssertionError
+_____________________ test_suite_uses_black_box_isolation ______________________
+
+    def test_suite_uses_black_box_isolation():
+        """Verify test_limiter.py respects black-box behavioral testing rules."""
+>       test_path = _safe_output_path(TEST_FILE)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/tests/test_outputs.py:446: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = PosixPath('/app/test_limiter.py')
+
+    def _safe_output_path(path: Path) -> Path:
+        """Validate that required artifact exists as a regular, non-symlink file inside /app."""
+>       assert path.exists(), f"Target deliverable is missing: {path}"
+E       AssertionError: Target deliverable is missing: /app/test_limiter.py
+E       assert False
+E        +  where False = exists()
+E        +    where exists = PosixPath('/app/test_limiter.py').exists
+
+/tests/test_outputs.py:191: AssertionError
+_______________ test_reference_implementation_passes_repeatedly ________________
+
+    def test_reference_implementation_passes_repeatedly():
+        """Verify suite passes 100% against reference implementation across 3 iterations."""
+>       test_path = _safe_output_path(TEST_FILE)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/tests/test_outputs.py:452: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = PosixPath('/app/test_limiter.py')
+
+    def _safe_output_path(path: Path) -> Path:
+        """Validate that required artifact exists as a regular, non-symlink file inside /app."""
+>       assert path.exists(), f"Target deliverable is missing: {path}"
+E       AssertionError: Target deliverable is missing: /app/test_limiter.py
+E       assert False
+E        +  where False = exists()
+E        +    where exists = PosixPath('/app/test_limiter.py').exists
+
+/tests/test_outputs.py:191: AssertionError
+_____________________ test_reference_alt_formatting_passes _____________________
+
+    def test_reference_alt_formatting_passes():
+        """Verify test suite passes against a reformatted reference implementation."""
+>       test_path = _safe_output_path(TEST_FILE)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/tests/test_outputs.py:462: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = PosixPath('/app/test_limiter.py')
+
+    def _safe_output_path(path: Path) -> Path:
+        """Validate that required artifact exists as a regular, non-symlink file inside /app."""
+>       assert path.exists(), f"Target deliverable is missing: {path}"
+E       AssertionError: Target deliverable is missing: /app/test_limiter.py
+E       assert False
+E        +  where False = exists()
+E        +    where exists = PosixPath('/app/test_limiter.py').exists
+
+/tests/test_outputs.py:191: AssertionError
+____________________ test_reference_alt2_formatting_passes _____________________
+
+    def test_reference_alt2_formatting_passes():
+        """Verify test suite passes against a structurally-modified, dict-backed reference implementation."""
+>       test_path = _safe_output_path(TEST_FILE)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/tests/test_outputs.py:475: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = PosixPath('/app/test_limiter.py')
+
+    def _safe_output_path(path: Path) -> Path:
+        """Validate that required artifact exists as a regular, non-symlink file inside /app."""
+>       assert path.exists(), f"Target deliverable is missing: {path}"
+E       AssertionError: Target deliverable is missing: /app/test_limiter.py
+E       assert False
+E        +  where False = exists()
+E        +    where exists = PosixPath('/app/test_limiter.py').exists
+
+/tests/test_outputs.py:191: AssertionError
+______________ test_buggy_implementation_is_detected_by_behavior _______________
+
+    def test_buggy_implementation_is_detected_by_behavior():
+        """Verify test suite detects failure when executed against the buggy implementation."""
+>       result = _run_suite_against(_safe_output_path(TEST_FILE), "buggy")
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/tests/test_outputs.py:488: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = PosixPath('/app/test_limiter.py')
+
+    def _safe_output_path(path: Path) -> Path:
+        """Validate that required artifact exists as a regular, non-symlink file inside /app."""
+>       assert path.exists(), f"Target deliverable is missing: {path}"
+E       AssertionError: Target deliverable is missing: /app/test_limiter.py
+E       assert False
+E        +  where False = exists()
+E        +    where exists = PosixPath('/app/test_limiter.py').exists
+
+/tests/test_outputs.py:191: AssertionError
+_____________ test_root_cause_report_explains_distinct_mechanisms ______________
+
+    def test_root_cause_report_explains_distinct_mechanisms():
+        """Verify root_cause.txt contains substantive per-defect analysis matching code-level defects."""
+>       content = _safe_output_path(ROOT_CAUSE_FILE).read_text(encoding="utf-8")
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/tests/test_outputs.py:494: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = PosixPath('/app/root_cause.txt')
+
+    def _safe_output_path(path: Path) -> Path:
+        """Validate that required artifact exists as a regular, non-symlink file inside /app."""
+>       assert path.exists(), f"Target deliverable is missing: {path}"
+E       AssertionError: Target deliverable is missing: /app/root_cause.txt
+E       assert False
+E        +  where False = exists()
+E        +    where exists = PosixPath('/app/root_cause.txt').exists
+
+/tests/test_outputs.py:191: AssertionError
+___________________________ test_mutation_kill_rate ____________________________
+
+    def test_mutation_kill_rate():
+        """Verify test suite kills 100% (20 of 20) of seeded mutants."""
+>       test_path = _safe_output_path(TEST_FILE)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+/tests/test_outputs.py:631: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+path = PosixPath('/app/test_limiter.py')
+
+    def _safe_output_path(path: Path) -> Path:
+        """Validate that required artifact exists as a regular, non-symlink file inside /app."""
+>       assert path.exists(), f"Target deliverable is missing: {path}"
+E       AssertionError: Target deliverable is missing: /app/test_limiter.py
+E       assert False
+E        +  where False = exists()
+E        +    where exists = PosixPath('/app/test_limiter.py').exists
+
+/tests/test_outputs.py:191: AssertionError
+=========================== short test summary info ============================
+FAILED ../tests/test_outputs.py::test_scored_output_files_exist_and_are_regular
+FAILED ../tests/test_outputs.py::test_root_cause_report_size - AssertionError...
+FAILED ../tests/test_outputs.py::test_suite_uses_black_box_isolation - Assert...
+FAILED ../tests/test_outputs.py::test_reference_implementation_passes_repeatedly
+FAILED ../tests/test_outputs.py::test_reference_alt_formatting_passes - Asser...
+FAILED ../tests/test_outputs.py::test_reference_alt2_formatting_passes - Asse...
+FAILED ../tests/test_outputs.py::test_buggy_implementation_is_detected_by_behavior
+FAILED ../tests/test_outputs.py::test_root_cause_report_explains_distinct_mechanisms
+FAILED ../tests/test_outputs.py::test_mutation_kill_rate - AssertionError: Ta...
+============================== 9 failed in 4.14s ===============================

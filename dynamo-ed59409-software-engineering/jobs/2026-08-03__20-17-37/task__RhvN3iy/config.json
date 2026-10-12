@@ -1,0 +1,12 @@
+{
+    "task": {
+        "path": "task",
+        "source": "dynamo-ed59409-software-engineering"
+    },
+    "trial_name": "task__RhvN3iy",
+    "trials_dir": "jobs\\2026-08-03__20-17-37",
+    "agent": {
+        "name": "nop"
+    },
+    "job_id": "edd774f1-0e34-4285-8988-db134e220d14"
+}
