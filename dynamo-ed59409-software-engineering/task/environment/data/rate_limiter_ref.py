@@ -87,6 +87,25 @@ class TokenBucketRateLimiter:
                 "reconfigurations": self._metrics_reconfigs,
             }
 
+    def stats(self) -> Dict[str, Any]:
+        with self._mutex:
+            total = self._metrics_allowed + self._metrics_blocked
+            hit_ratio = (self._metrics_allowed / total) if total > 0 else 0.0
+            eviction_rate = 0.0
+            return {
+                "allowed": self._metrics_allowed,
+                "blocked": self._metrics_blocked,
+                "refills": self._metrics_refills,
+                "reconfigurations": self._metrics_reconfigs,
+                "hits": self._metrics_allowed,
+                "misses": self._metrics_blocked,
+                "evictions": 0,
+                "expirations": 0,
+                "hit_ratio": hit_ratio,
+                "eviction_rate": eviction_rate,
+                "current_size": len(self._state_store),
+            }
+
     def clear(self) -> None:
         with self._mutex:
             self._state_store.clear()
