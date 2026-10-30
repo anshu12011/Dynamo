@@ -189,6 +189,73 @@ def test_stats_tracking_accuracy():
     assert stats["reconfigurations"] == 1
 
 
+def test_stats_empty_snapshot_has_zero_counters():
+    """Verify stats is safe and complete before any operation has occurred."""
+    limiter = TokenBucketRateLimiter(capacity=1.0, refill_rate=1.0)
+
+    assert limiter.get_stats() == {
+        "allowed": 0,
+        "blocked": 0,
+        "refills": 0,
+        "reconfigurations": 0,
+    }
+
+
+def test_stats_snapshot_remains_consistent_during_concurrent_operations():
+    """Verify concurrent metric readers observe complete, stable counter snapshots."""
+    limiter = TokenBucketRateLimiter(capacity=1000.0, refill_rate=100.0)
+    errors = []
+    start = threading.Barrier(5)
+
+    def writer(client_idx):
+        try:
+            start.wait(timeout=1.0)
+            for operation_idx in range(25):
+                limiter.allow_request(f"client_{client_idx}", cost=1.0)
+                if operation_idx % 5 == 0:
+                    limiter.refill(f"client_{client_idx}")
+                    limiter.set_client_quota(
+                        f"client_{client_idx}", capacity=1000.0, refill_rate=100.0
+                    )
+        except Exception as exc:
+            errors.append(exc)
+
+    def reader():
+        try:
+            start.wait(timeout=1.0)
+            for _ in range(200):
+                stats = limiter.get_stats()
+                assert set(stats) == {
+                    "allowed",
+                    "blocked",
+                    "refills",
+                    "reconfigurations",
+                }
+                assert all(isinstance(value, int) and value >= 0 for value in stats.values())
+                assert stats["allowed"] + stats["blocked"] <= 100
+        except Exception as exc:
+            errors.append(exc)
+
+    threads = [
+        threading.Thread(target=writer, args=(client_idx,))
+        for client_idx in range(4)
+    ]
+    threads.append(threading.Thread(target=reader))
+
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
+
+    assert not errors, f"Concurrent stats execution errors: {errors}"
+    assert limiter.get_stats() == {
+        "allowed": 100,
+        "blocked": 0,
+        "refills": 20,
+        "reconfigurations": 20,
+    }
+
+
 def test_clear_preserves_stats():
     """Verify clear resets client buckets but retains cumulative stats."""
     limiter = TokenBucketRateLimiter(capacity=5.0, refill_rate=1.0)
